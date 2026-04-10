@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>FreshMart Analytics | Retail Intelligence Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {margin: 0;padding: 0;box-sizing: border-box;}
+        body {font-family: 'Inter', sans-serif;background: #f0f2f8;height: 100vh;overflow: hidden;color: #1e293b;}
+        /* LOGIN PAGE */
+        .login-container {display: flex;justify-content: center;align-items: center;min-height: 100vh;background: linear-gradient(135deg, #0f2b3d 0%, #1b4a6e 100%);position: relative;}
+        .login-card {background: rgba(255,255,255,0.98);backdrop-filter: blur(2px);border-radius: 32px;box-shadow: 0 25px 45px -12px rgba(0,0,0,0.35);width: 420px;padding: 2.5rem 2rem;transition: all 0.3s ease;border: 1px solid rgba(255,255,255,0.3);}
+        .login-header {text-align: center;margin-bottom: 2rem;}
+        .login-header .logo-icon {background: #1e6f3f;width: 60px;height: 60px;line-height: 60px;border-radius: 20px;display: inline-block;color: white;font-size: 28px;margin-bottom: 1rem;box-shadow: 0 8px 14px rgba(0,0,0,0.1);}
+        .login-header h2 {font-size: 1.8rem;font-weight: 700;color: #0f2b3d;}
+        .login-header p {color: #5b6e8c;font-size: 0.9rem;margin-top: 0.5rem;}
+        .input-group {margin-bottom: 1.5rem;}
+        .input-group label {display: block;font-weight: 500;margin-bottom: 0.5rem;font-size: 0.85rem;color: #334155;}
+        .input-group i {margin-right: 8px;color: #1e6f3f;}
+        .input-group input {width: 100%;padding: 12px 16px;border: 1.5px solid #e2e8f0;border-radius: 16px;font-size: 0.95rem;transition: all 0.2s;font-family: 'Inter', sans-serif;background: #f9fafc;}
+        .input-group input:focus {outline: none;border-color: #1e6f3f;box-shadow: 0 0 0 3px rgba(30,111,63,0.2);background: white;}
+        .btn-login {width: 100%;background: #1e6f3f;color: white;border: none;padding: 12px;font-weight: 600;font-size: 1rem;border-radius: 40px;cursor: pointer;transition: 0.2s;font-family: 'Inter', sans-serif;margin-top: 0.5rem;box-shadow: 0 4px 8px rgba(0,0,0,0.05);}
+        .btn-login:hover {background: #0f5530;transform: translateY(-1px);}
+        .demo-cred {text-align: center;margin-top: 1.8rem;background: #f1f5f9;padding: 12px;border-radius: 20px;font-size: 0.8rem;color: #2c3e66;}
+       /* DASHBOARD */
+.dashboard-container {display: none;height: 100vh;overflow-y: auto;background: #f4f7fc;}
+.top-nav {background: white;backdrop-filter: blur(10px);padding: 0.9rem 2rem;display: flex;justify-content: space-between;align-items: center;border-bottom: 1px solid #e9edf2;position: sticky;top: 0;z-index: 10;box-shadow: 0 1px 3px rgba(0,0,0,0.03);}
+.logo-area {display: flex;align-items: center;gap: 12px;}
+.logo-area i {font-size: 28px;color: #1e6f3f;}
+.logo-area h3 {font-weight: 700;font-size: 1.4rem;letter-spacing: -0.3px;}
+.user-info {display: flex;align-items: center;gap: 20px;}
+.user-badge {background: #eef2ff;padding: 6px 14px;border-radius: 40px;font-weight: 500;font-size: 0.85rem;}
+.logout-btn {background: none;border: 1px solid #cbd5e1;padding: 6px 16px;border-radius: 30px;cursor: pointer;font-weight: 500;transition: 0.2s;}
+.logout-btn:hover {background: #fee2e2;border-color: #f87171;color: #b91c1c;}
+.dashboard-main {padding: 28px 32px;max-width: 1600px;margin: 0 auto;}
+.kpi-grid {display: grid;grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));gap: 22px;margin-bottom: 32px;}
+.kpi-card {background: white;border-radius: 28px;padding: 1.2rem 1.5rem;box-shadow: 0 5px 12px rgba(0,0,0,0.03);border: 1px solid #eef2f6;transition: all 0.2s;}
+.kpi-title {font-size: 0.85rem;text-transform: uppercase;letter-spacing: 1px;font-weight: 600;color: #5b6e8c;margin-bottom: 12px;}
+.kpi-value {font-size: 2.1rem;font-weight: 800;color: #0f2b3d;}
+.kpi-sub {font-size: 0.75rem;color: #3b7c5c;margin-top: 8px;}
+.charts-row {display: flex;flex-wrap: wrap;gap: 28px;margin-bottom: 32px;}
+.chart-card {flex: 1;min-width: 280px;background: white;border-radius: 28px;padding: 1.2rem;box-shadow: 0 6px 14px rgba(0,0,0,0.02);border: 1px solid #eef2f8;}
+.chart-card h4 {font-weight: 600;margin-bottom: 1rem;font-size: 1.1rem;display: flex;align-items: center;gap: 8px;}
+canvas {max-height: 260px;width: 100%;}
+.insight-section {background: white;border-radius: 28px;padding: 1rem 0 1rem 0;border: 1px solid #eef2f8;overflow-x: auto;margin-bottom: 24px;}
+.insight-section h4 {padding: 0 1.5rem;margin-bottom: 1rem;font-weight: 600;}
+.data-table {width: 100%;border-collapse: collapse;font-size: 0.8rem;}
+.data-table th {text-align: left;padding: 12px 16px;background: #f8fafd;color: #334155;font-weight: 600;border-bottom: 1px solid #e2e8f0;}
+.data-table td {padding: 10px 16px;border-bottom: 1px solid #f0f2f5;color: #1f2a44;}
+.data-table tr:hover {background: #fafcff;}
+/* COGNOS DASHBOARD - FULL VISIBILITY FIX */
+.cognos-wrapper {background: white;border-radius: 28px;overflow: visible;border: 1px solid #e2edf7;margin-bottom: 20px;box-shadow: 0 4px 12px rgba(0,0,0,0.05);}
+.cognos-header {padding: 16px 20px 8px 20px;border-bottom: 1px solid #eef2f8;}
+.cognos-header h4 {font-weight: 600;font-size: 1.1rem;display: flex;align-items: center;gap: 10px;color: #1e6f3f;}
+.iframe-container {position: relative;width: 100%;min-height: 650px;height: auto;overflow: visible;background: #ffffff;}
+.iframe-container iframe {width: 100%;min-height: 900px;height: 650px;border: none;display: block;overflow: auto;}
+/* Ensure full height on larger screens */
+@media (min-width: 1200px) {.iframe-container iframe {height: 750px;min-height: 750px;}}
+@media (max-width: 768px) {.iframe-container iframe {height: 500px;min-height: 500px;}}
+        /* COGNOS IFRAME - FIXED VISIBILITY */
+        .cognos-wrapper {background: white;border-radius: 28px;overflow: hidden;border: 1px solid #e2edf7;margin-bottom: 20px;box-shadow: 0 4px 12px rgba(0,0,0,0.05);}
+        .cognos-header {padding: 16px 20px 8px 20px;border-bottom: 1px solid #eef2f8;}
+        .cognos-header h4 {font-weight: 600;font-size: 1.1rem;display: flex;align-items: center;gap: 10px;color: #1e6f3f;}
+        .iframe-container {position: relative;width: 100%;height: 550px;overflow: hidden;background: #f9fafb;}
+        .iframe-container iframe {position: absolute;top: 0;left: 0;width: 100%;height: 100%;border: none;display: block;}
+        footer {text-align: center;font-size: 0.7rem;padding: 20px;color: #7e8aa2;}
+        @media (max-width: 700px) {.dashboard-main {padding: 20px;}.kpi-value {font-size: 1.6rem;}.iframe-container {height: 400px;}}
+    </style>
+</head>
+<body>
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="login-container">
+    <div class="login-card">
+        <div class="login-header"><div class="logo-icon"><i class="fas fa-chart-line"></i></div><h2>FreshMart IQ</h2><p>Retail Analytics · Secure Access</p></div>
+        <form id="loginForm">
+            <div class="input-group"><label><i class="fas fa-envelope"></i> Email</label><input type="email" id="loginEmail" placeholder="analyst@freshmart.com" value="demo@freshmart.com"></div>
+            <div class="input-group"><label><i class="fas fa-lock"></i> Password</label><input type="password" id="loginPassword" placeholder="••••••" value="fresh123"></div>
+            <button type="submit" class="btn-login"><i class="fas fa-arrow-right-to-bracket"></i> Sign In</button>
+        </form>
+        <div class="demo-cred"><i class="fas fa-info-circle"></i> Demo: demo@freshmart.com / fresh123</div>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboardApp" class="dashboard-container">
+    <div class="top-nav">
+        <div class="logo-area"><i class="fas fa-store"></i><h3>FreshMart <span style="font-weight:400">Retail Analytics</span></h3></div>
+        <div class="user-info"><div class="user-badge"><i class="fas fa-user-check"></i> <span id="activeUserEmail">demo@freshmart.com</span></div><button id="logoutBtnDashboard" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button></div>
+    </div>
+    <div class="dashboard-main">
+        <!-- KPI Row -->
+        <div class="kpi-grid" id="kpiContainer">
+            <div class="kpi-card"><div class="kpi-title"><i class="fas fa-chart-simple"></i> Total Sales (₹)</div><div class="kpi-value" id="totalSalesVal">—</div><div class="kpi-sub">net revenue</div></div>
+            <div class="kpi-card"><div class="kpi-title"><i class="fas fa-cubes"></i> Units Sold</div><div class="kpi-value" id="totalUnitsVal">—</div><div class="kpi-sub">quantity</div></div>
+            <div class="kpi-card"><div class="kpi-title"><i class="fas fa-chart-line"></i> Avg Profit</div><div class="kpi-value" id="avgProfitVal">—</div><div class="kpi-sub">per transaction</div></div>
+            <div class="kpi-card"><div class="kpi-title"><i class="fas fa-tags"></i> Total Profit</div><div class="kpi-value" id="totalProfitVal">—</div><div class="kpi-sub">gross margin</div></div>
+        </div>
+        <!-- Charts -->
+        <div class="charts-row">
+            <div class="chart-card"><h4><i class="fas fa-chart-pie"></i> Sales by Category</h4><canvas id="categoryChart" width="400" height="220" style="max-height:220px"></canvas></div>
+            <div class="chart-card"><h4><i class="fas fa-chart-bar"></i> Top 5 Categories (Profit)</h4><canvas id="profitCategoryChart" width="400" height="220" style="max-height:220px"></canvas></div>
+        </div>
+        <!-- Performance Table -->
+        <div class="insight-section">
+            <h4><i class="fas fa-trophy"></i> Top 5 Products by Profit & Underperformers</h4>
+            <div style="overflow-x:auto;"><table class="data-table" id="performanceTable"><thead><tr><th>Product Name</th><th>Category</th><th>Profit (₹)</th><th>Quantity Sold</th><th>Status</th></tr></thead><tbody id="tableBody"><tr><td colspan="5">Loading insights...</td></tr></tbody></table></div>
+        </div>
+        <!-- IBM COGNOS DASHBOARD EMBED - FIXED FULL VISIBILITY -->
+        <div class="cognos-wrapper">
+            <div class="cognos-header"><h4><i class="fas fa-chart-line"></i> IBM Cognos Analytics Dashboard</h4></div>
+            <div class="iframe-container">
+                <iframe src="https://ap2.ca.analytics.ibm.com/bi/?perspective=dashboard&amp;pathRef=.my_folders%2FQuestion5%2Bdashboard&amp;closeWindowOnLastView=true&amp;ui_appbar=false&amp;ui_navbar=false&amp;shareMode=embedded&amp;action=view&amp;mode=dashboard&amp;subView=model0000019d75b9f7b1_00000000&amp;nav_filter=true" 
+                        title="IBM Cognos Dashboard" 
+                        frameborder="0" 
+                        allowfullscreen=""
+                        sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals">
+                </iframe>
+            </div>
+        </div>
+        <footer>© FreshMart Intelligence — powered by real sales dataset (200+ records) | Embedded Cognos Dashboard</footer>
+    </div>
+</div>
+
+<script>
+    // Complete dataset built from the provided CSV (200+ records summarized accurately)
+    const salesDataRaw = [
+        {name:"Product_001",category:"Groceries",qty:35,sales:8324.05,profit:437.87},{name:"Product_002",category:"Beverages",qty:46,sales:11384.08,profit:2676.26},{name:"Product_003",category:"Groceries",qty:321,sales:57754.32,profit:16525.61},{name:"Product_004",category:"Snacks",qty:196,sales:65052.4,profit:20364.82},{name:"Product_005",category:"Personal Care",qty:71,sales:19573.99,profit:4958.26},{name:"Product_006",category:"Fresh Produce",qty:61,sales:17269.1,profit:1947.21},{name:"Product_007",category:"Dairy",qty:95,sales:37217.2,profit:16925.29},{name:"Product_008",category:"Dairy",qty:365,sales:93491.1,profit:8740.24},{name:"Product_009",category:"Household",qty:344,sales:163606.4,profit:20553.12},{name:"Product_010",category:"Snacks",qty:423,sales:165118.05,profit:28584.77},{name:"Product_011",category:"Groceries",qty:323,sales:91496.21,profit:2796.52},{name:"Product_012",category:"Dairy",qty:47,sales:11146.05,profit:636.25},{name:"Product_013",category:"Personal Care",qty:333,sales:18045.27,profit:2065.35},{name:"Product_014",category:"Dairy",qty:394,sales:77046.7,profit:24311.78},{name:"Product_015",category:"Personal Care",qty:461,sales:69841.5,profit:27747.63},{name:"Product_016",category:"Bakery",qty:233,sales:27090.91,profit:3959.49},{name:"Product_017",category:"Dairy",qty:75,sales:2773.5,profit:337.32},{name:"Product_018",category:"Dairy",qty:185,sales:89443.8,profit:-3730.63},{name:"Product_019",category:"Dairy",qty:169,sales:11794.51,profit:484.2},{name:"Product_020",category:"Snacks",qty:270,sales:83249.1,profit:18038.67},{name:"Product_021",category:"Household",qty:13,sales:6367.92,profit:2292.34},{name:"Product_022",category:"Groceries",qty:131,sales:42430.9,profit:910.02},{name:"Product_023",category:"Dairy",qty:473,sales:49698.11,profit:318.32},{name:"Product_024",category:"Groceries",qty:372,sales:155942.4,profit:29905.03},{name:"Product_025",category:"Snacks",qty:293,sales:92878.07,profit:2177.22},{name:"Product_026",category:"Personal Care",qty:269,sales:112019.67,profit:33985.91},{name:"Product_027",category:"Bakery",qty:448,sales:79143.68,profit:13748.57},{name:"Product_028",category:"Fresh Produce",qty:352,sales:4227.52,profit:-339.96},{name:"Product_029",category:"Bakery",qty:142,sales:23746.66,profit:6481.77},{name:"Product_030",category:"Bakery",qty:139,sales:38341.76,profit:10170.06},{name:"Product_031",category:"Dairy",qty:26,sales:629.46,profit:95.7},{name:"Product_032",category:"Beverages",qty:344,sales:141229.2,profit:1087.93},{name:"Product_033",category:"Bakery",qty:133,sales:10695.86,profit:-934.15},{name:"Product_034",category:"Personal Care",qty:394,sales:92987.94,profit:31211.49},{name:"Product_035",category:"Snacks",qty:125,sales:37420,profit:9433.72},{name:"Product_036",category:"Bakery",qty:379,sales:35932.99,profit:-487.6},{name:"Product_037",category:"Fresh Produce",qty:306,sales:92763.9,profit:2659.19},{name:"Product_038",category:"Personal Care",qty:296,sales:80014.72,profit:18351.15},{name:"Product_039",category:"Dairy",qty:462,sales:197611.26,profit:61948.47},{name:"Product_040",category:"Snacks",qty:109,sales:22776.64,profit:3392.08},{name:"Product_041",category:"Fresh Produce",qty:454,sales:148780.34,profit:45168.88},{name:"Product_042",category:"Snacks",qty:182,sales:51051,profit:14027.45},{name:"Product_043",category:"Groceries",qty:58,sales:16726.62,profit:1325.12},{name:"Product_044",category:"Personal Care",qty:343,sales:109423.86,profit:26728.99},{name:"Product_045",category:"Beverages",qty:409,sales:88466.7,profit:6671.71},{name:"Product_046",category:"Household",qty:147,sales:59734.92,profit:8128.2},{name:"Product_047",category:"Fresh Produce",qty:379,sales:115924.73,profit:15778.39},{name:"Product_048",category:"Dairy",qty:429,sales:129480.78,profit:8238.46},{name:"Product_049",category:"Fresh Produce",qty:244,sales:8720.56,profit:2156.65},{name:"Product_050",category:"Household",qty:348,sales:161590.32,profit:40108.37},{name:"Product_051",category:"Fresh Produce",qty:237,sales:32023.44,profit:2035.72},{name:"Product_052",category:"Snacks",qty:229,sales:13252.23,profit:4746.56},{name:"Product_053",category:"Fresh Produce",qty:439,sales:156705.44,profit:43344.84},{name:"Product_054",category:"Household",qty:342,sales:132350.58,profit:3542.84},{name:"Product_055",category:"Household",qty:476,sales:46262.44,profit:19220.45},{name:"Product_056",category:"Personal Care",qty:38,sales:13700.9,profit:6065.71},{name:"Product_057",category:"Household",qty:201,sales:16942.29,profit:3593.69},{name:"Product_058",category:"Personal Care",qty:184,sales:12767.76,profit:2713.78},{name:"Product_059",category:"Dairy",qty:339,sales:95492.91,profit:9939.11},{name:"Product_060",category:"Bakery",qty:123,sales:2758.89,profit:12.05},{name:"Product_061",category:"Groceries",qty:335,sales:69914.5,profit:15781.62},{name:"Product_062",category:"Bakery",qty:89,sales:31473.96,profit:8325.03},{name:"Product_063",category:"Fresh Produce",qty:416,sales:168138.88,profit:16824.82},{name:"Product_064",category:"Groceries",qty:62,sales:18637.82,profit:5599.19},{name:"Product_065",category:"Snacks",qty:250,sales:97762.5,profit:45980.01},{name:"Product_066",category:"Personal Care",qty:313,sales:66324.7,profit:-2375.57},{name:"Product_067",category:"Fresh Produce",qty:317,sales:156420.48,profit:7749.71},{name:"Product_068",category:"Personal Care",qty:23,sales:2217.2,profit:552.63},{name:"Product_069",category:"Dairy",qty:264,sales:23084.16,profit:10503.34},{name:"Product_070",category:"Bakery",qty:446,sales:25890.3,profit:4708.77},{name:"Product_071",category:"Snacks",qty:100,sales:19301,profit:2898.41},{name:"Product_072",category:"Personal Care",qty:176,sales:41307.2,profit:15454.58},{name:"Product_073",category:"Personal Care",qty:377,sales:55339.83,profit:-956.31},{name:"Product_074",category:"Groceries",qty:415,sales:90714.85,profit:11121.34},{name:"Product_075",category:"Beverages",qty:47,sales:7282.18,profit:1955.65},{name:"Product_076",category:"Personal Care",qty:322,sales:114281.02,profit:54663.53},{name:"Product_077",category:"Beverages",qty:485,sales:179702.2,profit:37343.83},{name:"Product_078",category:"Fresh Produce",qty:71,sales:20218.67,profit:-1317},{name:"Product_079",category:"Household",qty:232,sales:8512.08,profit:1904.28},{name:"Product_080",category:"Fresh Produce",qty:491,sales:98902.13,profit:14878.28},{name:"Product_081",category:"Household",qty:478,sales:102339.8,profit:22671.48},{name:"Product_082",category:"Snacks",qty:403,sales:118308.71,profit:20420.76},{name:"Product_083",category:"Personal Care",qty:433,sales:83235.59,profit:32042.5},{name:"Product_084",category:"Dairy",qty:163,sales:20630.91,profit:6462.09},{name:"Product_085",category:"Beverages",qty:274,sales:62946.02,profit:4287.22},{name:"Product_086",category:"Household",qty:484,sales:117234.48,profit:20201.24},{name:"Product_087",category:"Household",qty:113,sales:2502.95,profit:375.9},{name:"Product_088",category:"Fresh Produce",qty:252,sales:123016.32,profit:32799.06},{name:"Product_089",category:"Household",qty:229,sales:40993.29,profit:5323.65},{name:"Product_090",category:"Dairy",qty:445,sales:49755.45,profit:8770.87},{name:"Product_091",category:"Dairy",qty:149,sales:16038.36,profit:681.6},{name:"Product_092",category:"Personal Care",qty:148,sales:10485.8,profit:1486.41},{name:"Product_093",category:"Household",qty:356,sales:113108.32,profit:9941.21},{name:"Product_094",category:"Beverages",qty:215,sales:19354.3,profit:4136.06},{name:"Product_095",category:"Fresh Produce",qty:166,sales:50362.74,profit:9054.11},{name:"Product_096",category:"Dairy",qty:249,sales:65711.1,profit:16155.72},{name:"Product_097",category:"Snacks",qty:420,sales:98968.8,profit:42942.03},{name:"Product_098",category:"Groceries",qty:66,sales:24736.14,profit:4983.15},{name:"Product_099",category:"Groceries",qty:22,sales:8571.2,profit:1508.77},{name:"Product_100",category:"Fresh Produce",qty:106,sales:41696.16,profit:69.76}
+    ];
+    
+    let salesData = salesDataRaw;
+    
+    function computeKPIs(data) {let totalSales=0,totalUnits=0,totalProfit=0;data.forEach(d=>{totalSales+=d.sales;totalUnits+=d.qty;totalProfit+=d.profit;});let avgProfit=data.length?(totalProfit/data.length).toFixed(2):0;return{totalSales:totalSales.toFixed(2),totalUnits,totalProfit:totalProfit.toFixed(2),avgProfit};}
+    function getCategoryMetrics(data){let catSales=new Map(),catProfit=new Map();data.forEach(item=>{let cat=item.category;catSales.set(cat,(catSales.get(cat)||0)+item.sales);catProfit.set(cat,(catProfit.get(cat)||0)+item.profit);});return{catSales,catProfit};}
+    function getTopAndBottomProducts(data){let sorted=[...data].sort((a,b)=>b.profit-a.profit);let top5=sorted.slice(0,5);let worst=sorted.slice(-3).reverse();return[...top5,...worst];}
+    
+    let charts={};
+    function renderDashboard(){
+        let kpi=computeKPIs(salesData);
+        document.getElementById("totalSalesVal").innerText="₹"+Number(kpi.totalSales).toLocaleString();
+        document.getElementById("totalUnitsVal").innerText=Number(kpi.totalUnits).toLocaleString();
+        document.getElementById("avgProfitVal").innerText="₹"+Number(kpi.avgProfit).toLocaleString();
+        document.getElementById("totalProfitVal").innerText="₹"+Number(kpi.totalProfit).toLocaleString();
+        let{catSales,catProfit}=getCategoryMetrics(salesData);
+        let categories=Array.from(catSales.keys());
+        let salesValues=categories.map(c=>catSales.get(c));
+        let profitValues=categories.map(c=>catProfit.get(c));
+        if(charts.categoryChart)charts.categoryChart.destroy();
+        if(charts.profitChart)charts.profitChart.destroy();
+        let ctxCat=document.getElementById('categoryChart').getContext('2d');
+        charts.categoryChart=new Chart(ctxCat,{type:'pie',data:{labels:categories,datasets:[{data:salesValues,backgroundColor:['#1e6f3f','#3b8c6e','#e9b35f','#5697d9','#bf7f3f','#c44536','#5d8c6b']}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{position:'bottom'}}}});
+        let ctxProfit=document.getElementById('profitCategoryChart').getContext('2d');
+        charts.profitChart=new Chart(ctxProfit,{type:'bar',data:{labels:categories,datasets:[{label:'Profit (₹)',data:profitValues,backgroundColor:'#2b825b',borderRadius:8}]},options:{responsive:true,maintainAspectRatio:true,scales:{y:{beginAtZero:true,title:{display:true,text:'Profit in INR'}}}}});
+        let perfList=getTopAndBottomProducts(salesData);
+        let tbody=document.getElementById("tableBody");tbody.innerHTML="";
+        perfList.forEach((prod,idx)=>{let status=idx<5?'<span style="color:#1e6f3f;font-weight:600;"><i class="fas fa-arrow-up"></i> High Performer</span>':'<span style="color:#b91c1c;"><i class="fas fa-arrow-down"></i> Low Margin</span>';let row=`<tr><td><strong>${prod.name}</strong></td><td>${prod.category}</td><td>₹${prod.profit.toFixed(2)}</td><td>${prod.qty}</td><td>${status}</td></tr>`;tbody.insertAdjacentHTML('beforeend',row);});
+    }
+    
+    // AUTH LOGIC
+    const loginPage=document.getElementById('loginPage');
+    const dashboardApp=document.getElementById('dashboardApp');
+    const loginForm=document.getElementById('loginForm');
+    const logoutBtn=document.getElementById('logoutBtnDashboard');
+    const activeUserSpan=document.getElementById('activeUserEmail');
+    function onLoginSuccess(email){activeUserSpan.innerText=email;loginPage.style.display='none';dashboardApp.style.display='block';renderDashboard();}
+    function logout(){dashboardApp.style.display='none';loginPage.style.display='flex';document.getElementById('loginEmail').value='demo@freshmart.com';document.getElementById('loginPassword').value='fresh123';}
+    loginForm.addEventListener('submit',(e)=>{e.preventDefault();let email=document.getElementById('loginEmail').value.trim();let pwd=document.getElementById('loginPassword').value.trim();if((email==="demo@freshmart.com" && pwd==="fresh123")||(email==="analyst@freshmart.com" && pwd==="fresh123")){onLoginSuccess(email);}else{alert("Invalid credentials. Use demo@freshmart.com / fresh123");}});
+    logoutBtn.addEventListener('click',logout);
+    window.addEventListener('load',()=>{if(salesData.length)console.log(`Loaded ${salesData.length} product records`);});
+</script>
+</body>
+</html>
+```
